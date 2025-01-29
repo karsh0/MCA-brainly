@@ -1,46 +1,40 @@
-// src/app/signup/page.tsx
+// src/app/signin/page.tsx
 
 "use client";
 
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SignUp() {
+export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const router = useRouter();
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
+    const res = await signIn("credentials", {
+      redirect: false,
+      username,
+      password,
     });
 
-    if (res.ok) {
-      setSuccess("Account created successfully! Redirecting to sign in...");
-       router.push("/api/auth//signin"); 
+    if (res?.error) {
+      setError("Invalid username or password");
     } else {
-      const data = await res.json();
-      setError(data.error || "Failed to create account");
+      router.push("/dashboard"); // Redirect to dashboard on successful login
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+        <h1 className="text-2xl font-bold mb-4">Sign In</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {success && <p className="text-green-500 mb-4">{success}</p>}
-        <form onSubmit={handleSignUp}>
+        <form onSubmit={handleSignIn}>
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Username
@@ -69,13 +63,13 @@ export default function SignUp() {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
           >
-            Sign Up
+            Sign In
           </button>
         </form>
         <p className="mt-4 text-sm text-gray-600">
-          Already have an account? <a href="/signin" className="text-blue-600">Sign In</a>
+          Dont have an account? <a href="/signup" className="text-blue-600">Sign Up</a>
         </p>
       </div>
     </div>
