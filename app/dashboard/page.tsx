@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   // Fetch session data on component mount
   useEffect(() => {
-    axios.get<Session>('http://localhost:3000/api/dashboard').then((response) => setSession(response.data))
+    axios.get<Session>('/api/dashboard').then((response) => setSession(response.data))
   }, []);
 
   const handleShare = async () => {
