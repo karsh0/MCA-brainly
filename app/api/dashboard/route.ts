@@ -16,9 +16,7 @@ export async function GET() {
  
   return NextResponse.json({
     message: "Welcome to your dashboard!",
-    user: {
-      id: session.user.id,
-      username: session.user.username,
-    },
+    user: session.user
   });
 }
+
