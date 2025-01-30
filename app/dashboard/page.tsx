@@ -1,9 +1,9 @@
 // src/app/dashboard/page.tsx
 "use client"
 import { useEffect, useState } from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "../api/auth/[...nextauth]/route";
+// import { redirect } from "next/navigation";
 import { Button } from "../../components/button";
 import { Card } from "../../components/card";
 import { CreateModel } from "../../components/createModel";
@@ -11,12 +11,13 @@ import { Plusicon } from "../../icons/plusicon";
 import { Shareicon } from "../../icons/shareicon";
 import { Sidebar } from "../../components/sidebar";
 import { UseContent } from "../../hooks/useContent";
+import axios from "axios";
 
 // Define the session type based on what you're getting from getServerSession
 interface Session {
   user: {
     username: string;
-    email: string;
+    userId: string;
     // Add other properties as needed
   };
   accessToken: string;
@@ -29,16 +30,7 @@ export default function DashboardPage() {
 
   // Fetch session data on component mount
   useEffect(() => {
-    const fetchSession = async () => {
-      const sessionData = await getServerSession(authOptions);
-      if (!sessionData || !sessionData.user) {
-        redirect("/login");
-      } else {
-        setSession(sessionData); // Now session is typed as Session or null
-      }
-    };
-    
-    fetchSession();
+    axios.get<Session>('/dashboard').then((response) => setSession(response.data))
   }, []);
 
   const handleShare = async () => {

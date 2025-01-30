@@ -18,7 +18,7 @@ export function UseContent() {
     setError(null);
 
     try {
-      const response = await fetch("/api/content"); // Next.js API route
+      const response = await fetch("/api/content"); 
       if (!response.ok) {
         throw new Error("Failed to fetch content");
       }
