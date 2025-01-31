@@ -51,37 +51,38 @@ export function CreateModel({ open, onClose }: { open: boolean; onClose: () => v
   return (
     <div>
       {open && (
-        <div className="w-screen h-screen fixed top-0 left-0 bg-slate-600 opacity-90 flex justify-center">
-          <div className="flex flex-col justify-center">
-            <span className="bg-white p-4 rounded-md">
-              <div className="flex justify-end">
-                <div onClick={onClose} className="cursor-pointer">
-                  <Crossicon />
-                </div>
+        <div className="w-screen h-screen fixed top-0 left-0 bg-black bg-opacity-70 flex justify-center items-center">
+          <div className="bg-white p-8 rounded-lg shadow-xl w-96">
+            <div className="flex justify-end relative h-7">
+              <div onClick={onClose} className="absolute  top-0 right-0 cursor-pointer w-7 h-7">
+                <Crossicon />
               </div>
-              <div>
-                <Input placeholder="Title" ref={titleref} />
-                <Input placeholder="Link" ref={linkref} />
+            </div>
+
+            <div className="mt-4">
+              <Input placeholder="Title" ref={titleref} />
+              <Input placeholder="Link" ref={linkref} />
+            </div>
+
+            <div className="mt-4">
+              <h1 className="text-center font-semibold text-lg mb-2 text-black">Type</h1>
+              <div className="flex justify-center gap-4">
+                <Button
+                  text="Youtube"
+                  variant={type === contenttype.Youtube ? "primary" : "secondary"}
+                  onClick={() => setType(contenttype.Youtube)}
+                />
+                <Button
+                  text="Twitter"
+                  variant={type === contenttype.Twitter ? "primary" : "secondary"}
+                  onClick={() => setType(contenttype.Twitter)}
+                />
               </div>
-              <div>
-                <h1 className="flex justify-center">Type</h1>
-                <div className="flex pt-2">
-                  <Button
-                    text="Youtube"
-                    variant={type === contenttype.Youtube ? "primary" : "secondary"}
-                    onClick={() => setType(contenttype.Youtube)}
-                  />
-                  <Button
-                    text="Twitter"
-                    variant={type === contenttype.Twitter ? "primary" : "secondary"}
-                    onClick={() => setType(contenttype.Twitter)}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-center pt-4">
-                <Button variant="primary" text="Submit" onClick={addcontent} />
-              </div>
-            </span>
+            </div>
+
+            <div className="flex justify-center mt-6">
+              <Button variant="primary" text="Submit" onClick={addcontent} className="w-full flex justify-center "/>
+            </div>
           </div>
         </div>
       )}
@@ -90,19 +91,18 @@ export function CreateModel({ open, onClose }: { open: boolean; onClose: () => v
 }
 
 const Input = React.forwardRef<HTMLInputElement, { placeholder: string }>(
-    function InputComponent({ placeholder }, ref) {
-      return (
-        <div>
-          <input
-            ref={ref}
-            placeholder={placeholder}
-            type="text"
-            className="px-2 py-2 border rounded-md w-full"
-          />
-        </div>
-      );
-    }
-  );
-  
-  Input.displayName = "InputComponent";
-  
+  function InputComponent({ placeholder }, ref) {
+    return (
+      <div className="mb-4">
+        <input
+          ref={ref}
+          placeholder={placeholder}
+          type="text"
+          className="px-4 py-2 border rounded-md w-full"
+        />
+      </div>
+    );
+  }
+);
+
+Input.displayName = "InputComponent";

@@ -76,20 +76,18 @@ export default function DashboardPage() {
         <CreateModel open={model} onClose={() => setModel(false)} />
 
         {/* Button Actions */}
-        <div className="flex justify-between sm:flex-col sm:items-center sm:space-y-4 sm:px-4 md:px-6">
+        <div className="flex justify-end items-center mt-4 gap-10">
           <Button
             onClick={() => setModel(true)}
             variant="primary"
             text="Add Content"
             startIcon={<Plusicon />}
-            className="sm:w-full sm:mb-4"
           />
           <Button
             onClick={handleShare}
             variant="secondary"
             text="Share"
             startIcon={<Shareicon />}
-            className="sm:w-full"
           />
         </div>
 
