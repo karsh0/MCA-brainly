@@ -33,9 +33,7 @@ export function UseContent() {
 
   useEffect(() => {
     fetchContent();
-    const interval = setInterval(fetchContent, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [setContent]);
 
   return { content, loading, error, refresh: fetchContent };
 }
