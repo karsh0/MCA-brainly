@@ -1,21 +1,21 @@
 import { Deleteicons } from "../icons/deleteicon";
-import { Plusicon } from "../icons/plusicon";
+// import { Plusicon } from "../icons/plusicon";
 import { Shareicon } from "../icons/shareicon";
 import { useEffect } from "react";
 
 interface Cinterface {
+  id: string;
   title: string;
   link: string;
   type: "youtube" | "twitter";
 }
 
-// Extract YouTube Video ID
 const getYouTubeEmbedUrl = (url: string): string => {
   const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
   return match ? `https://www.youtube.com/embed/${match[1]}` : "";
 };
 
-export const Card = ({ title, link, type }: Cinterface) => {
+export const Card = ({ id, title, link, type }: Cinterface) => {
   useEffect(() => {
     if (type === "twitter") {
       const script = document.createElement("script");
@@ -26,18 +26,41 @@ export const Card = ({ title, link, type }: Cinterface) => {
     }
   }, [type]);
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/content`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      console.log(id);
+      const data = await res.json();
+      if (res.ok) {
+       alert("ID deleted") 
+      } else {
+        alert(data.message || "Failed to delete content");
+      }
+    } catch (error) {
+      console.error("Error deleting content:", error);
+      alert("Something went wrong.");
+    }
+  };
+
   return (
     <div className="max-w-72 min-h-48 min-w-72 p-8 bg-slate-200 rounded-md shadow-lg">
       <div className="flex justify-between">
         <div className="flex items-center text-md">
-          <Plusicon className="pr-2 text-gray-500" />
-          <span>{title}</span>
+          {/* <Plusicon className="pr-2 text-gray-500" /> */}
+          <span className="text-black">{title}</span>
         </div>
         <div className="flex items-center">
           <a href={link} target="_blank" rel="noopener noreferrer" className="pr-2 text-gray-500">
             <Shareicon />
           </a>
-          <Deleteicons className="pr-2 text-gray-500" />
+            <button onClick={handleDelete} className="pr-2 text-gray-500 hover:text-red-500 border border-red-500">
+               <Deleteicons />
+            </button>
+
         </div>
       </div>
 

@@ -25,7 +25,7 @@ export default function SignIn() {
     if (res?.error) {
       setError("Invalid username or password");
     } else {
-      router.push("/dashboard"); // Redirect to dashboard on successful login
+      router.push("/dashboard");
     }
   };
 

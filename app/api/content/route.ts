@@ -65,3 +65,37 @@ export async function GET() {
     return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
   }
 }
+
+
+export async function DELETE(req: NextRequest){
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json({ message: "Content ID is required" }, { status: 400 });
+    }
+
+    const content = await prisma.content.findUnique({
+      where: { id },
+    });
+
+    if (!content || content.userId !== session.user.id) {
+      return NextResponse.json({ message: "Content not found or unauthorized" }, { status: 404 });
+    }
+
+    await prisma.content.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: "Content deleted successfully" }, { status: 200 });
+    
+
+    
+  } catch (error: any) {
+    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
+  }
+}
